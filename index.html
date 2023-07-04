@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <input type="text" id="t1"/>
+    <button onclick="add()">Add</button>  
+    <button onclick="update()" style="display: none;">update</button>
+    <div></div>
+</body>
+<script>
+    let iin;
+    function add(){
+        data=document.getElementById('t1').value
+        arr=localStorage.getItem('todo')
+        if(arr==null){
+            arr=[]
+            arr.push(data)
+            localStorage.setItem('todo',JSON.stringify(arr))
+        }
+        else{
+            arr=JSON.parse(arr)
+            arr.push(data)
+            localStorage.setItem('todo',JSON.stringify(arr))
+        }
+        document.getElementById('t1').value=""
+        disp()
+    }
+    function disp(){
+        arr=localStorage.getItem('todo')
+        arr=JSON.parse(arr)
+        divre=document.getElementsByTagName('div')[0]
+        divre.innerHTML=""
+        for(i=0;i<arr.length;i++){
+            lr=document.createElement('li')
+            lr.innerHTML=arr[i]+' '+`<i class="fa-solid fa-trash" onclick="del(${i})"></i><i class="fa-solid fa-pen" onclick="edit(${i})"></i>`
+            divre.append(lr)
+        }  
+    }
+    function del(i){
+        arr=localStorage.getItem('todo')
+        arr=JSON.parse(arr)
+        arr.splice(i,1)
+        localStorage.setItem('todo',JSON.stringify(arr))
+        disp()
+    }
+    function edit(i){
+        arr=localStorage.getItem('todo')
+        arr=JSON.parse(arr)
+        document.getElementById('t1').value=arr[i]
+        br=document.getElementsByTagName('button')
+        br[0].style.display="none"
+        br[1].style.display="block"
+        iin=i
+    }
+    function update(){
+        data=document.getElementById('t1').value
+        arr=localStorage.getItem('todo')
+        arr=JSON.parse(arr)
+        arr[iin]=data
+        localStorage.setItem('todo',JSON.stringify(arr))  
+        disp()
+        br=document.getElementsByTagName('button')
+        br[0].style.display="block"
+        br[1].style.display="none"
+        
+    }
+    disp()
+</script>
+</html>
